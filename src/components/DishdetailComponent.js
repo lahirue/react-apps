@@ -1,9 +1,7 @@
-import React,{ Component } from 'react';
+import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, ListGroup, ListGroupItem,ListGroupItemHeading,ListGroupItemText } from 'reactstrap';
-
-class DishdetailComponent extends Component {
    
-    renderComments (dish) {
+    function RenderComments ({dish}) {
         let commentList = null;
         if (dish != null && dish.comments != null) {
         
@@ -25,7 +23,7 @@ class DishdetailComponent extends Component {
         return commentList; 
     }
 
-    renderDish (dish) {
+    function RenderDish ({dish}) {
         if (dish != null) {
             return (
                 <Card>
@@ -41,15 +39,15 @@ class DishdetailComponent extends Component {
         }
     }
 
-    render () {
+    const DishDetails = (props) => {
         return (
             <div className="row">
                 <div className="col-xs col-sm col-md-5 m-1">
-                    {this.renderDish(this.props.dish)}
+                    <RenderDish dish = {props.dish} />
                 </div>
                 <div className="col-xs col-sm col-md-5 m-1">
                 <ListGroup>
-                    {this.renderComments(this.props.dish)}
+                    <RenderComments dish = {props.dish} />
                     </ListGroup>
                 </div>
 
@@ -57,7 +55,7 @@ class DishdetailComponent extends Component {
            
         );
     }
-}
 
-export default DishdetailComponent;
+
+export default DishDetails;
 
