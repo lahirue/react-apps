@@ -1,8 +1,10 @@
 import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, ListGroup, ListGroupItem,ListGroupItemHeading,ListGroupItemText } from 'reactstrap';
 import {Link} from 'react-router-dom';
+import CommentForm from './CommentForm'
+import  {Loading} from './LoadingComponent';
 
-    function RenderComments ({comments}) {
+    function RenderComments ({comments,addComment, dishId}) {
         let commentList = null;
         if (comments != null) {
         
@@ -14,13 +16,15 @@ import {Link} from 'react-router-dom';
                       {comment.user} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))} 
                       </ListGroupItemText>
                     </ListGroupItem>
-                
                    );
             });
      
         } else {
             commentList =  (<div> </div>);
         }
+        commentList = (<div> <h3>Comments List</h3> {commentList} 
+               <CommentForm dishId={dishId} addComment={addComment}  />
+         </div>);
         return commentList; 
     }
 
@@ -41,6 +45,23 @@ import {Link} from 'react-router-dom';
     }
 
     const DishDetails = (props) => {
+        if (props.isLoading) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <Loading />
+                    </div>
+                </div>
+            );
+        } else if (props.errMess) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            );
+        } else if (props.dish != null){
         return (
         <div className ="container">
                <div className="row" >
@@ -64,13 +85,17 @@ import {Link} from 'react-router-dom';
                 </div>
                 <div className="col-xs col-sm col-md-5 m-1">
                 <ListGroup>
-                    <RenderComments comments = {props.comments} />  
-                    </ListGroup>
+                    <RenderComments comments = {props.comments} 
+                    addComment = {props.addComment}
+                    dishId={props.dish.id}
+                    />  
+               </ListGroup>
                 </div>
 
             </div>
            </div>
         );
+        }
     }
 
 
